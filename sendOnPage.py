@@ -35,9 +35,8 @@ def log(level, message):
         print e
 
 
-def check_parameters(command_line_parser, options):
+def check_parameters(command_line_parser, options, configuration):
     log(logging.DEBUG, 'check_parameters() start...')
-    configuration = Configuration()
 
     if not options.enterprise_name:
         enterprise_name = configuration.get_enterprise_from_configuration()
@@ -90,7 +89,7 @@ def configure_logger(options):
     logger.setLevel(log_level)
 
 
-def parse_command_line():
+def parse_command_line(configuration):
     command_line_parser = optparse.OptionParser(usage='usage: %prog \n\t'
                                                       '-e|--enterprise_name\n\t'
                                                       '-t|--token token\n\t'
@@ -111,7 +110,7 @@ def parse_command_line():
 
     configure_logger(options)
 
-    check_parameters(command_line_parser, options)
+    check_parameters(command_line_parser, options, configuration)
 
     return options
 
@@ -140,12 +139,12 @@ def generate_message(options):
     return list_of_messages
 
 
-def send_message(options):
+def send_message(options, configuration):
     log(logging.DEBUG, 'send_message() start...')
 
     list_of_messages = generate_message(options)
 
-    onpage_hub_api_proxy = OnPageHubApi('https://nps.onpage.com/hub-api?wsdl', options.enterprise_name, options.token)
+    onpage_hub_api_proxy = OnPageHubApi(configuration.get_uri_from_configuration(), options.enterprise_name, options.token)
 
     result = onpage_hub_api_proxy.sendPage(list_of_messages)
     log(logging.DEBUG, result)
@@ -165,9 +164,9 @@ def send_message(options):
 
 
 def main():
-    options = parse_command_line()
-
-    send_message(options)
+    configuration = Configuration()
+    options = parse_command_line(configuration)
+    send_message(options, configuration)
 
 
 if __name__ == "__main__":

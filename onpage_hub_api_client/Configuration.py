@@ -18,6 +18,7 @@ class Configuration:
 
     def get_enterprise_from_configuration(self):
         enterprise_name = ""
+
         try:
             enterprise_name = self.__get_configuration_file().get("credentials", "enterprise")
         except ConfigParser.NoSectionError:
@@ -29,6 +30,7 @@ class Configuration:
 
     def get_token_from_configuration(self):
         token = ""
+
         try:
             token = self.__get_configuration_file().get("credentials", "token")
         except ConfigParser.NoSectionError:
@@ -37,3 +39,15 @@ class Configuration:
             print("token option not found in configuration file")
 
         return token
+
+    def get_uri_from_configuration(self):
+        uri = ""
+
+        try:
+            uri = self.__get_configuration_file().get("settings", "uri")
+        except ConfigParser.NoSectionError:
+            print("settings for enterprise not found")
+        except ConfigParser.NoOptionError:
+            print("uri option not found in configuration file")
+
+        return uri
