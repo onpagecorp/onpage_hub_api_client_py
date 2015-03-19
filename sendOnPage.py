@@ -8,6 +8,7 @@ logging.getLogger('suds.client').setLevel(logging.ERROR)
 
 from onpage_hub_api_client.Message import Message
 from onpage_hub_api_client.OnPageHubApi import OnPageHubApi
+from onpage_hub_api_client.Configuration import Configuration
 import optparse
 
 
@@ -36,11 +37,18 @@ def log(level, message):
 
 def check_parameters(command_line_parser, options):
     log(logging.DEBUG, 'check_parameters() start...')
+    configuration = Configuration()
+
+    if not options.user:
+        options.user = configuration.get_enterprise_from_configuration()
 
     if not options.user:
         error_message = 'Specify -u|--user parameter'
         log(logging.ERROR, error_message)
         command_line_parser.error(error_message)
+
+    if not options.token:
+        options.token = configuration.get_token_from_configuration()
 
     if not options.token:
         error_message = 'Specify -t|--token parameter'
@@ -136,7 +144,7 @@ def send_message(options):
 
     list_of_messages = generate_message(options)
 
-    onpage_hub_api_proxy = OnPageHubApi('https://nps.onpage.com/hub-api?wsdl', options.user, options.token)
+    onpage_hub_api_proxy = OnPageHubApi('https://qanps.onpage.com/hub-api?wsdl', options.user, options.token)
 
     result = onpage_hub_api_proxy.sendPage(list_of_messages)
     log(logging.DEBUG, result)
