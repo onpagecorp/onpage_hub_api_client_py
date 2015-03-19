@@ -145,7 +145,7 @@ def send_message(options):
 
     list_of_messages = generate_message(options)
 
-    onpage_hub_api_proxy = OnPageHubApi('https://qanps.onpage.com/hub-api?wsdl', options.enterprise_name, options.token)
+    onpage_hub_api_proxy = OnPageHubApi('https://nps.onpage.com/hub-api?wsdl', options.enterprise_name, options.token)
 
     result = onpage_hub_api_proxy.sendPage(list_of_messages)
     log(logging.DEBUG, result)

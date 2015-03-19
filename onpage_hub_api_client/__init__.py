@@ -1,3 +1,3 @@
-__author__ = 'Andrew Ben'
+__author__ = 'Onset Technology'
 
-__all__ = ['OnPageHubApi', 'Message']
+__all__ = ['OnPageHubApi', 'Message', 'Configuration']

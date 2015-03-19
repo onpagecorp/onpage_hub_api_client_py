@@ -8,10 +8,10 @@ real values.
 
 Typical usage to send Page::
 
-sendOnPage.py -u ENTERPRISE_NAME -t TOKEN -s subject_text –r PAGER1,PAGER2 –f SENDER
+sendOnPage.py -e ENTERPRISE_NAME -t TOKEN -s subject_text –r PAGER1,PAGER2 –f SENDER
 
 Available parameters in command line:
-        -u|--user user_name - required parameter, has to be requested from support@onpage.com
+        -e|--enterprise_name - required parameter, has to be requested from support@onpage.com
         -t|--token token - required parameter, has to be requested from support@onpage.com
         -s|--subject subject - required parameter
         -r|--recipients recipient_1[,recipient_2[,...]] - required parameter, list of OnPage Pagers delimited by ','
