@@ -39,13 +39,14 @@ def check_parameters(command_line_parser, options):
     log(logging.DEBUG, 'check_parameters() start...')
     configuration = Configuration()
 
-    if not options.user:
-        options.user = configuration.get_enterprise_from_configuration()
-
-    if not options.user:
-        error_message = 'Specify -u|--user parameter'
-        log(logging.ERROR, error_message)
-        command_line_parser.error(error_message)
+    if not options.enterprise_name:
+        enterprise_name = configuration.get_enterprise_from_configuration()
+        if not enterprise_name:
+            error_message = 'Specify -e|--enterprise_name parameter'
+            log(logging.ERROR, error_message)
+            command_line_parser.error(error_message)
+        else:
+            options.enterprise_name = enterprise_name
 
     if not options.token:
         options.token = configuration.get_token_from_configuration()
@@ -91,7 +92,7 @@ def configure_logger(options):
 
 def parse_command_line():
     command_line_parser = optparse.OptionParser(usage='usage: %prog \n\t'
-                                                      '-u|--user user_name\n\t'
+                                                      '-e|--enterprise_name\n\t'
                                                       '-t|--token token\n\t'
                                                       '-s|--subject subject\n\t'
                                                       '-r|--recipients recipient_1[,recipient_2[,...]]\n\t'
@@ -99,7 +100,7 @@ def parse_command_line():
                                                       '[-m|--m message_body]\n\t'
                                                       '[-l|--log INFO|NOTSET|DEBUG|ERROR|CRITICAL|FATAL]\n')
 
-    command_line_parser.add_option("-u", "--user", action="store", type="string", dest="user")
+    command_line_parser.add_option("-e", "--enterprise_name", action="store", type="string", dest="enterprise_name")
     command_line_parser.add_option("-t", "--token", action="store", type="string", dest="token")
     command_line_parser.add_option("-s", "--subject", action="store", type="string", dest="subject")
     command_line_parser.add_option("-r", "--recipients", action="store", type="string", dest="recipients")
@@ -144,7 +145,7 @@ def send_message(options):
 
     list_of_messages = generate_message(options)
 
-    onpage_hub_api_proxy = OnPageHubApi('https://qanps.onpage.com/hub-api?wsdl', options.user, options.token)
+    onpage_hub_api_proxy = OnPageHubApi('https://qanps.onpage.com/hub-api?wsdl', options.enterprise_name, options.token)
 
     result = onpage_hub_api_proxy.sendPage(list_of_messages)
     log(logging.DEBUG, result)
