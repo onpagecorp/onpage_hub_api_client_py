@@ -4,7 +4,7 @@ __author__ = 'Onset Technology'
 
 setup(
     name='OnPage HUB API Client',
-    version='0.1.0',
+    version='0.1.1',
     author='Onset Technology',
     author_email='support@onsettechnology.com',
     packages=['onpage_hub_api_client'],
